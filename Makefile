@@ -1,16 +1,18 @@
 ICON_DIR := $(HOME)/.icons
 THEME_DIR := $(HOME)/.themes
-GTK_NAME := gtk-gruvbox-hidpi
 
-ICON_TARGET := $(ICON_DIR)/$(GTK_NAME)
-THEME_TARGET := $(THEME_DIR)/$(GTK_NAME)
+ICON_SRCS := $(shell ls icons)
+THEME_SRCS := $(shell ls themes)
 
-install: $(ICON_TARGET) $(THEME_TARGET)
+ICON_TARGETS := $(patsubst %, $(ICON_DIR)/%, $(ICON_SRCS))
+THEME_TARGETS := $(patsubst %, $(THEME_DIR)/%, $(THEME_SRCS))
 
-$(ICON_TARGET): $(CURDIR)/icons/$(GTK_NAME)
+install: $(ICON_TARGETS) $(THEME_TARGETS)
+
+$(ICON_DIR)/%: $(CURDIR)/icons/%
 	ln -s $< $@
 
-$(THEME_TARGET): $(CURDIR)/themes/$(GTK_NAME)
+$(THEME_DIR)/%: $(CURDIR)/themes/%
 	ln -s $< $@
 
 clean:
